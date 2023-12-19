@@ -8,7 +8,7 @@ function BookingScreen():JSX.Element {
   return(
     <React.Fragment>
       <Helmet>
-        <title>Escape Room</title>
+        <title>Escape Room: Бронирование</title>
       </Helmet>
       <SvgHidden />
       <div className="wrapper">
