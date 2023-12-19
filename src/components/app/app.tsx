@@ -17,16 +17,21 @@ function App(): JSX.Element {
         <ScrollToTop />
         <Routes>
           <Route path={AppRoutes.Main} element={<MainScreen/>}/>
-          <Route path={AppRoutes.Booking} element={<BookingScreen/>}/>
+          <Route path={AppRoutes.Quest} element={<LoginScreen/>}/>
           <Route path={AppRoutes.Contacts} element={<ContactsScreen/>}/>
           <Route path={AppRoutes.Login} element={<LoginScreen/>}/>
+          <Route path={AppRoutes.Booking} element={
+            <PrivateRoute authorizationStatus={currAuthorizationStatus}>
+              <BookingScreen/>
+            </PrivateRoute>
+          }
+          />
           <Route path={AppRoutes.MyQuests} element={
             <PrivateRoute authorizationStatus={currAuthorizationStatus}>
               <MyQuestsScreen/>
             </PrivateRoute>
           }
           />
-          <Route path={AppRoutes.Quest} element={<LoginScreen/>}/>
           <Route path='*' element={<NotFoundScreen />} />
 
         </Routes>
