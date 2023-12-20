@@ -35,9 +35,46 @@ export const definitionLevels = {
 };
 
 export const definitionTypes = {
-  adventures: 'Приключения',
-  horror: 'Ужасы',
-  mystic: 'Мистика',
-  detective: 'Детектив',
-  'sci-fi': 'Sci-fi',
+  all: {
+    def: 'Все квесты',
+    img: {
+      width: 26,
+      height: 30
+    }
+  },
+  adventures: {
+    def: 'Приключения',
+    img: {
+      width: 36,
+      height: 30
+    }
+  },
+  horror: {
+    def: 'Ужасы',
+    img: {
+      width: 30,
+      height: 30
+    }
+  },
+  mystic: {
+    def: 'Мистика',
+    img: {
+      width: 30,
+      height: 30
+    }
+  },
+  detective: {
+    def: 'Детектив',
+    img: {
+      width: 40,
+      height: 30
+    }
+  },
+  'sci-fi': {
+    def: 'Sci-fi',
+    img: {
+      width: 28,
+      height: 30
+    }
+  },
 };
