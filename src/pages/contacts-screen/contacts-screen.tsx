@@ -3,6 +3,13 @@ import SvgHidden from '../../components/svg-hidden/svg-hidden';
 import Header from '../../components/header/header';
 import Footer from '../../components/footer/footer';
 import { Helmet } from 'react-helmet-async';
+import { Location } from '../../types/location';
+import Map from '../../components/map/map';
+
+const location: Location = {
+  address: 'Набережная реки Карповки, 5П',
+  coords: [59.968403, 30.317359],
+};
 
 function ContactsScreen():JSX.Element {
   return(
@@ -51,11 +58,7 @@ function ContactsScreen():JSX.Element {
                   </dd>
                 </div>
               </dl>
-              <div className="contacts__map">
-                <div className="map">
-                  <div className="map__container"></div>
-                </div>
-              </div>
+              <Map block='contacts' location={location}></Map>
             </div>
           </div>
         </main>

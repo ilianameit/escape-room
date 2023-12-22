@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import { AppRoutes, currAuthorizationStatus } from '../../const/const';
 import { checkAuthorizationStatus } from '../../utils/check-authorization-status/check-authorization-status';
 import Logo from '../logo/logo';
@@ -12,15 +12,23 @@ function Header(): JSX.Element {
         <nav className="main-nav header__main-nav">
           <ul className="main-nav__list">
             <li className="main-nav__item">
-              <Link className="link not-disabled active" to={AppRoutes.Main}>Квесты</Link>
+              <NavLink className='link not-disabled'
+                to={AppRoutes.Main}
+              >
+                Квесты
+              </NavLink>
             </li>
             <li className="main-nav__item">
-              <Link className="link" to={AppRoutes.Contacts}>Контакты</Link>
+              <NavLink className='link' to={AppRoutes.Contacts}>
+                  Контакты
+              </NavLink>
             </li>
             {
               isLogged ? (
                 <li className="main-nav__item">
-                  <Link className="link" to={AppRoutes.MyQuests}>Мои бронирования</Link>
+                  <NavLink className='link' to={AppRoutes.MyQuests}>
+                    Мои бронирования
+                  </NavLink>
                 </li>
               ) : false
             }

@@ -17,7 +17,8 @@ function QuestScreen(): JSX.Element {
     return <NotFoundScreen />;
   }
 
-  const { title, type, level, peopleMinMax, description, coverImg, coverImgWebp } = quest;
+
+  const {title, type, level, peopleMinMax, description, coverImg, coverImgWebp } = quest;
   const [peopleMin, peopleMax] = peopleMinMax;
 
   return(
@@ -51,7 +52,7 @@ function QuestScreen(): JSX.Element {
               </h1>
               <p className="subtitle quest-page__subtitle">
                 <span className="visually-hidden">Жанр:</span>
-                {definitionTypes[type]}
+                {definitionTypes[type].def}
               </p>
               <ul className="tags tags--size-l quest-page__tags">
                 <li className="tags__item">
@@ -74,7 +75,7 @@ function QuestScreen(): JSX.Element {
               <p className="quest-page__description">
                 {description}
               </p>
-              <Link className="btn btn--accent btn--cta quest-page__btn" to={AppRoutes.Booking}>Забронировать</Link>
+              <Link className="btn btn--accent btn--cta quest-page__btn" to={`${AppRoutes.Quest}${id as string}${AppRoutes.Booking}`}>Забронировать</Link>
             </div>
           </div>
         </main>
