@@ -9,18 +9,24 @@ import LoginScreen from '../../pages/login-screen/login-screen';
 import PrivateRoute from '../private-route/private-route';
 import MyQuestsScreen from '../../pages/my-quests-screen/my-quests-screen';
 import NotFoundScreen from '../../pages/not-found-screen/not-found-screen';
+import QuestScreen from '../../pages/quest-screen/quest-screen';
+import { Quest } from '../../types/quest';
 
-function App(): JSX.Element {
+type AppProps = {
+  quests: Quest[];
+}
+
+function App({quests}: AppProps): JSX.Element {
   return (
     <HelmetProvider>
       <BrowserRouter>
         <ScrollToTop />
         <Routes>
-          <Route path={AppRoutes.Main} element={<MainScreen/>}/>
-          <Route path={AppRoutes.Quest} element={<LoginScreen/>}/>
+          <Route path={AppRoutes.Main} element={<MainScreen quests={quests}/>}/>
+          <Route path={`${AppRoutes.Quest}:id`} element={<QuestScreen/>}/>
           <Route path={AppRoutes.Contacts} element={<ContactsScreen/>}/>
           <Route path={AppRoutes.Login} element={<LoginScreen/>}/>
-          <Route path={AppRoutes.Booking} element={
+          <Route path={`${AppRoutes.Quest}:id${AppRoutes.Booking}`} element={
             <PrivateRoute authorizationStatus={currAuthorizationStatus}>
               <BookingScreen/>
             </PrivateRoute>
