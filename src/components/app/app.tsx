@@ -10,19 +10,43 @@ import PrivateRoute from '../private-route/private-route';
 import MyQuestsScreen from '../../pages/my-quests-screen/my-quests-screen';
 import NotFoundScreen from '../../pages/not-found-screen/not-found-screen';
 import QuestScreen from '../../pages/quest-screen/quest-screen';
-import { Quest } from '../../types/quest';
+//import { getToken } from '../../services/token';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { useEffect } from 'react';
+import { fetchQuestsAction } from '../../store/api-actions';
+import { getErrorQuests, getQuestsLoading } from '../../store/slices/quests/selectors';
+import LoadingScreen from '../../pages/loading.screen/loading-screen';
+import ErrorQuestsScreen from '../../pages/error-quests-screen/error-quests-screen';
 
-type AppProps = {
-  quests: Quest[];
-}
+function App(): JSX.Element {
+  //const token = getToken();
+  const dispatch = useAppDispatch();
 
-function App({quests}: AppProps): JSX.Element {
+  const isQuestsLoading = useAppSelector(getQuestsLoading);
+
+  useEffect(() => {
+    dispatch(fetchQuestsAction());
+  }, [dispatch]);
+
+  const hasErrorOffers = useAppSelector(getErrorQuests);
+
+  if (isQuestsLoading) {
+    return (
+      <LoadingScreen />
+    );
+  }
+
+  if (hasErrorOffers) {
+    return (
+      <ErrorQuestsScreen />);
+  }
+
   return (
     <HelmetProvider>
       <BrowserRouter>
         <ScrollToTop />
         <Routes>
-          <Route path={AppRoutes.Main} element={<MainScreen quests={quests}/>}/>
+          <Route path={AppRoutes.Main} element={<MainScreen />}/>
           <Route path={`${AppRoutes.Quest}:id`} element={<QuestScreen/>}/>
           <Route path={AppRoutes.Contacts} element={<ContactsScreen/>}/>
           <Route path={AppRoutes.Login} element={<LoginScreen/>}/>
