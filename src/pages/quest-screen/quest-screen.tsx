@@ -1,19 +1,43 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import SvgHidden from '../../components/svg-hidden/svg-hidden';
 import Header from '../../components/header/header';
 import Footer from '../../components/footer/footer';
 import { Helmet } from 'react-helmet-async';
 import { Link, useParams } from 'react-router-dom';
-import { quests } from '../../mocks/quests';
 import NotFoundScreen from '../not-found-screen/not-found-screen';
 import { AppRoutes, definitionLevels, definitionTypes } from '../../const/const';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { getErrorOneQuest, getOneQuest, getOneQuestLoading } from '../../store/slices/quests/selectors';
+import { dropQuest } from '../../store/slices/quests/quests';
+import { fetchOneQuestAction } from '../../store/api-actions';
+import LoadingScreen from '../loading.screen/loading-screen';
 
 
 function QuestScreen(): JSX.Element {
   const {id} = useParams();
-  const quest = quests.find((item) => item.id === id);
+  const dispatch = useAppDispatch();
 
-  if(!quest) {
+  const isQuestLoading = useAppSelector(getOneQuestLoading);
+  const quest = useAppSelector(getOneQuest);
+  const hasError = useAppSelector(getErrorOneQuest);
+
+  useEffect(() => {
+    if (!id) {
+      return;
+    }
+
+    dispatch(fetchOneQuestAction(id));
+
+    return () => {
+      dispatch(dropQuest());
+    };
+  }, [dispatch, id]);
+
+  if(isQuestLoading) {
+    <LoadingScreen />;
+  }
+
+  if(!quest || hasError || !id) {
     return <NotFoundScreen />;
   }
 
@@ -75,7 +99,7 @@ function QuestScreen(): JSX.Element {
               <p className="quest-page__description">
                 {description}
               </p>
-              <Link className="btn btn--accent btn--cta quest-page__btn" to={`${AppRoutes.Quest}${id as string}${AppRoutes.Booking}`}>Забронировать</Link>
+              <Link className="btn btn--accent btn--cta quest-page__btn" to={`${AppRoutes.Quest}${id}${AppRoutes.Booking}`}>Забронировать</Link>
             </div>
           </div>
         </main>
