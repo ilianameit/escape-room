@@ -17,6 +17,7 @@ function QuestScreen(): JSX.Element {
     return <NotFoundScreen />;
   }
 
+
   const {title, type, level, peopleMinMax, description, coverImg, coverImgWebp } = quest;
   const [peopleMin, peopleMax] = peopleMinMax;
 
