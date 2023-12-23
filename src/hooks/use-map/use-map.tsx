@@ -2,13 +2,15 @@ import { MutableRefObject, useEffect, useRef, useState } from 'react';
 import { Map, TileLayer } from 'leaflet';
 import { TileLayerSettings } from './use-map.const';
 import { Location } from '../../types/location';
+import { BookingInfo } from '../../types/booking-info';
 
 type useMapProps = {
   mapRef: MutableRefObject<HTMLElement | null>;
   location: Location;
+  quests?: BookingInfo[];
 }
 
-function useMap({ mapRef, location }: useMapProps): Map | null {
+function useMap({ mapRef, location, quests }: useMapProps): Map | null {
   const [map, setMap] = useState<Map | null>(null);
   const isRenderedRef = useRef<boolean>(false);
 
@@ -19,7 +21,7 @@ function useMap({ mapRef, location }: useMapProps): Map | null {
           lat: location.coords[0],
           lng: location.coords[1],
         },
-        zoom: 14,
+        zoom: quests ? 10 : 14,
       });
 
       const layer = new TileLayer(TileLayerSettings.url, {
@@ -31,7 +33,7 @@ function useMap({ mapRef, location }: useMapProps): Map | null {
       setMap(instance);
       isRenderedRef.current = true;
     }
-  }, [mapRef, location]);
+  }, [mapRef, location, quests]);
 
   return map;
 }
