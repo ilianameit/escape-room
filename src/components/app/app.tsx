@@ -1,6 +1,6 @@
 import { HelmetProvider } from 'react-helmet-async';
 import MainScreen from '../../pages/main-screen/main-screen';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import ScrollToTop from '../scroll-to-top/scroll-to-top';
 import { AppRoutes, currAuthorizationStatus } from '../../const/const';
 import BookingScreen from '../../pages/booking-screen/booking-screen';
@@ -17,6 +17,8 @@ import { fetchQuestsAction } from '../../store/api-actions';
 import { getErrorQuests, getQuestsLoading } from '../../store/slices/quests/selectors';
 import LoadingScreen from '../../pages/loading.screen/loading-screen';
 import ErrorQuestsScreen from '../../pages/error-quests-screen/error-quests-screen';
+import HistoryRouter from '../history-router/history-router';
+import browserHistory from '../../browser-history';
 
 function App(): JSX.Element {
   //const token = getToken();
@@ -43,7 +45,7 @@ function App(): JSX.Element {
 
   return (
     <HelmetProvider>
-      <BrowserRouter>
+      <HistoryRouter history={browserHistory} >
         <ScrollToTop />
         <Routes>
           <Route path={AppRoutes.Main} element={<MainScreen />}/>
@@ -65,7 +67,7 @@ function App(): JSX.Element {
           <Route path='*' element={<NotFoundScreen />} />
 
         </Routes>
-      </BrowserRouter>
+      </HistoryRouter>
     </HelmetProvider>
   );
 }
