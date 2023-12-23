@@ -8,15 +8,10 @@ import FilterListTypes from '../../components/filter-list-types/filter-list-type
 import FilterListLevels from '../../components/filter-list-levels/filter-list-levels';
 import { LevelQuest, TypeQuest } from '../../const/const';
 import EmptyFilteredQuests from '../../components/empty-filtered-quests/empty-filtered-quests';
-import { useAppDispatch, useAppSelector } from '../../hooks';
+import { useAppSelector } from '../../hooks';
 import { getQuests } from '../../store/slices/quests/selectors';
 
-// type MainProps = {
-
-// }
-
 function MainScreen(): JSX.Element {
-  //const dispatch = useAppDispatch();
   const quests = useAppSelector(getQuests);
 
   const [activeFilterTypeItem, setActiveFilterTypeItem] = useState<keyof typeof TypeQuest>('all');
