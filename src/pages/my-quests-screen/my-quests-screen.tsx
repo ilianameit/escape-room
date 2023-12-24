@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo, useCallback } from 'react';
 import SvgHidden from '../../components/svg-hidden/svg-hidden';
 import Header from '../../components/header/header';
 import Footer from '../../components/footer/footer';
@@ -12,14 +12,14 @@ import { cancelReservation } from '../../store/slices/reservation/reservation';
 import { fetchCancelReservedQuest } from '../../store/api-actions';
 
 
-function MyQuestsScreen(): JSX.Element {
+function MyQuestsScreenComponent(): JSX.Element {
   const dispatch = useAppDispatch();
   const bookingQuests = useAppSelector(getBookingQuests);
 
-  const handleCancelReserveClick = (id: Reservation['id']) => {
+  const handleCancelReserveClick = useCallback((id: Reservation['id']) => {
     dispatch(cancelReservation(id));
     dispatch(fetchCancelReservedQuest(id));
-  };
+  }, [dispatch]);
 
   return(
     <React.Fragment>
@@ -52,4 +52,5 @@ function MyQuestsScreen(): JSX.Element {
   );
 }
 
+const MyQuestsScreen = memo(MyQuestsScreenComponent);
 export default MyQuestsScreen;

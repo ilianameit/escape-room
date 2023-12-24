@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { memo, useCallback, useEffect, useState } from 'react';
 import SvgHidden from '../../components/svg-hidden/svg-hidden';
 import Header from '../../components/header/header';
 import Footer from '../../components/footer/footer';
@@ -16,7 +16,7 @@ import { BookingInfo } from '../../types/booking-info';
 import BookingForm from '../../components/booking-form/booking-form';
 import { getBookingInfoQuest } from '../../store/slices/reservation/selectors';
 
-function BookingScreen():JSX.Element {
+function BookingScreenComponent():JSX.Element {
   const {id} = useParams();
   const dispatch = useAppDispatch();
 
@@ -40,9 +40,9 @@ function BookingScreen():JSX.Element {
 
   const [bookingQuest, setBookingQuest] = useState<BookingInfo | undefined>(undefined);
 
-  const handleMarkerClick = (currentQuest: BookingInfo) => {
+  const handleMarkerClick = useCallback((currentQuest: BookingInfo) => {
     setBookingQuest(currentQuest);
-  };
+  }, []);
 
   if(bookingInfoQuests.length === 0 || !quest && isLoading) {
     return <LoadingScreen />;
@@ -94,5 +94,5 @@ function BookingScreen():JSX.Element {
     </React.Fragment>
   );
 }
-
+const BookingScreen = memo(BookingScreenComponent);
 export default BookingScreen;

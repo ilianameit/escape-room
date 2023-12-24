@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import { QuestPreview } from '../../types/quest-preview';
 import { AppRoutes, dateBooking, definitionLevels } from '../../const/const';
 import { Reservation } from '../../types/reservation';
+import { memo } from 'react';
 
 type QuestCardProps = {
   quest: QuestPreview;
@@ -9,7 +10,7 @@ type QuestCardProps = {
   onCancelReserveClick?: (id: Reservation['id']) => void;
 }
 
-function QuestCard({quest, reservation, onCancelReserveClick}: QuestCardProps): JSX.Element {
+function QuestCardComponent({quest, reservation, onCancelReserveClick}: QuestCardProps): JSX.Element {
   const {id, title, previewImgWebp, previewImg, level, peopleMinMax} = reservation?.quest || quest;
   const [peopleMin, peopleMax] = peopleMinMax;
 
@@ -83,4 +84,5 @@ function QuestCard({quest, reservation, onCancelReserveClick}: QuestCardProps): 
   );
 }
 
+const QuestCard = memo(QuestCardComponent);
 export default QuestCard;

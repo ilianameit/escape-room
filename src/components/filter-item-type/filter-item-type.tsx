@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { TypeQuest } from '../../const/const';
 
 type FilterItemTypeProps = {
@@ -11,7 +12,7 @@ type FilterItemTypeProps = {
   activeType: keyof typeof TypeQuest;
 }
 
-function FilterItemType({filterType, filterName, imgValue, onChangeType, activeType}: FilterItemTypeProps): JSX.Element {
+function FilterItemTypeComponent({filterType, filterName, imgValue, onChangeType, activeType}: FilterItemTypeProps): JSX.Element {
   const iconType = () => {
     if(filterType === 'all') {
       return `${filterType}-quests`;
@@ -37,4 +38,5 @@ function FilterItemType({filterType, filterName, imgValue, onChangeType, activeT
   );
 }
 
+const FilterItemType = memo(FilterItemTypeComponent);
 export default FilterItemType;
