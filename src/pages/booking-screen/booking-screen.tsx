@@ -12,8 +12,9 @@ import LoadingScreen from '../loading.screen/loading-screen';
 import NotFoundScreen from '../not-found-screen/not-found-screen';
 import Map from '../../components/map/map';
 import { BookingInfo } from '../../types/booking-info';
-import { getBookingInfoQuest } from '../../store/slices/booking-quest/selectors';
+
 import BookingForm from '../../components/booking-form/booking-form';
+import { getBookingInfoQuest } from '../../store/slices/reservation/selectors';
 
 function BookingScreen():JSX.Element {
   const {id} = useParams();
@@ -36,7 +37,6 @@ function BookingScreen():JSX.Element {
   const quest = useAppSelector(getOneQuest);
   const isLoading = useAppSelector(getOneQuestLoading);
   const bookingInfoQuests = useAppSelector(getBookingInfoQuest);
-
 
   const [bookingQuest, setBookingQuest] = useState<BookingInfo | undefined>(undefined);
 

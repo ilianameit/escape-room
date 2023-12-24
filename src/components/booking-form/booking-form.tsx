@@ -1,15 +1,19 @@
 import { useForm} from 'react-hook-form';
-import { DateBooking } from '../../const/const';
+import { AppRoutes, DateBooking } from '../../const/const';
 import { BookingInfo } from '../../types/booking-info';
 import { Quest } from '../../types/quest';
 import BookingFormDate from '../booking-form-date/booking-form-date';
 import styles from './style.module.css';
 import classNames from 'classnames';
-import { useAppDispatch } from '../../hooks';
+import { useAppDispatch, useAppSelector } from '../../hooks';
 import { fetchBookQuestAction } from '../../store/api-actions';
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 import { BookingPreview } from '../../types/booking-preview';
 import { DateSlotBooking } from '../../types/slots-booking';
+import { useNavigate } from 'react-router-dom';
+import ErrorSending from '../error-sending/error-sending';
+import { getBookingQuestStatus, getErrorBookingQuestStatus, getSuccessfulBookingQuestStatus } from '../../store/slices/reservation/selectors';
+import { resetStatus } from '../../store/slices/reservation/reservation';
 
 type FormInputsType = {
   name: string;
@@ -24,13 +28,13 @@ type BookingFormProps = {
   quests: BookingInfo[];
   selectedQuest?: BookingInfo;
 }
-function BookingForm({quest, quests, selectedQuest}: BookingFormProps):JSX.Element {
+function BookingForm({quest, quests, selectedQuest}: BookingFormProps):JSX.Element { //reserForm
   const dispatch = useAppDispatch();
+  const navigateTo = useNavigate();
   const [slot, setSlot] = useState<DateSlotBooking>({
     today: {time: '', isAvailable: true},
     tomorrow: {time: '', isAvailable: true},
   });
-
   const {today, tomorrow} = slot;
   const [contactPerson, setContactPerson] = useState<BookingPreview['contactPerson']>('');
   const [phone, setPhone] = useState<BookingPreview['phone']>('');
@@ -39,6 +43,11 @@ function BookingForm({quest, quests, selectedQuest}: BookingFormProps):JSX.Eleme
   if (!selectedQuest) {
     selectedQuest = quests[0];
   }
+
+  const isBookingQuest = useAppSelector(getBookingQuestStatus);
+  const hasError = useAppSelector(getErrorBookingQuestStatus);
+  const isSuccessfulStatus = useAppSelector(getSuccessfulBookingQuestStatus);
+
   const {slots} = selectedQuest;
   const { register, handleSubmit, formState: {
     errors,
@@ -48,7 +57,19 @@ function BookingForm({quest, quests, selectedQuest}: BookingFormProps):JSX.Eleme
   const [minPeople, maxPeople] = quest.peopleMinMax;
   const regexPeopleCount = `^[${minPeople}-${maxPeople}]$`;
 
-  function handleFormSubmit() {
+  const resetSlotsTime = () => {
+    setSlot({
+      today: { time: '', isAvailable: true },
+      tomorrow: { time: '', isAvailable: true }
+    });
+
+  };
+
+  useEffect(() => {
+    resetSlotsTime();
+  }, [selectedQuest]);
+
+  const handleFormSubmit = () => {
     dispatch(fetchBookQuestAction({
       id: quest.id,
       data: {
@@ -61,31 +82,37 @@ function BookingForm({quest, quests, selectedQuest}: BookingFormProps):JSX.Eleme
         placeId: selectedQuest?.id ?? quests[0].id
       }
     }));
+  };
+
+  if(isSuccessfulStatus) {
+    dispatch(resetStatus());
+    navigateTo(AppRoutes.MyQuests);
   }
-  function handleSlotChange(type: keyof typeof DateBooking, time: string) {
+
+  const handleSlotChange = (type: keyof typeof DateBooking, time: string) => {
     setSlot({
       ...slot,
       today: {time: '', isAvailable: true},
       tomorrow: {time: '', isAvailable: true},
       [type]: {time, isAvailable: true }
     });
-  }
+  };
 
-  function handleContactPersonChange(evt: ChangeEvent<HTMLInputElement>) {
+  const handleContactPersonChange = (evt: ChangeEvent<HTMLInputElement>) => {
     setContactPerson(evt.target.value);
-  }
+  };
 
-  function handlePhoneChange(evt: ChangeEvent<HTMLInputElement>) {
+  const handlePhoneChange = (evt: ChangeEvent<HTMLInputElement>) => {
     setPhone(evt.target.value);
-  }
+  };
 
-  function handleWithChildrenChange() {
+  const handleWithChildrenChange = () => {
     setWithChildren((preview) => !preview);
-  }
+  };
 
-  function handlePeopleCountChange(evt: ChangeEvent<HTMLInputElement>) {
+  const handlePeopleCountChange = (evt: ChangeEvent<HTMLInputElement>) => {
     setPeopleCount(Number(evt.target.value));
-  }
+  };
 
   return(
     <form
@@ -174,10 +201,11 @@ function BookingForm({quest, quests, selectedQuest}: BookingFormProps):JSX.Eleme
       <button
         className="btn btn--accent btn--cta booking-form__submit"
         type="submit"
-        disabled={!isValid}
+        disabled={!isValid || isBookingQuest}
       >
-        Забронировать
+        { isBookingQuest ? 'Брованирование...' : 'Забронировать'}
       </button>
+      {hasError && <ErrorSending />}
       <label className="custom-checkbox booking-form__checkbox booking-form__checkbox--agreement">
         <input
           type="checkbox"
