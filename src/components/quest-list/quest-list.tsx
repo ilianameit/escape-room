@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { QuestPreview } from '../../types/quest-preview';
 import { Reservation } from '../../types/reservation';
 import QuestCard from '../quest-card/quest-card';
@@ -8,7 +9,7 @@ type QuestListProps = {
   onCancelReserveClick?: (id: Reservation['id']) => void;
 }
 
-function QuestList({quests, reservations, onCancelReserveClick}: QuestListProps): JSX.Element {
+function QuestListComponent({quests, reservations, onCancelReserveClick}: QuestListProps): JSX.Element {
   return(
     <div className="cards-grid">
       {
@@ -22,4 +23,5 @@ function QuestList({quests, reservations, onCancelReserveClick}: QuestListProps)
   );
 }
 
+const QuestList = memo(QuestListComponent);
 export default QuestList;

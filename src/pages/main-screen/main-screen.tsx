@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { memo, useCallback, useMemo, useState } from 'react';
 import SvgHidden from '../../components/svg-hidden/svg-hidden';
 import Footer from '../../components/footer/footer';
 import Header from '../../components/header/header';
@@ -11,22 +11,22 @@ import EmptyFilteredQuests from '../../components/empty-filtered-quests/empty-fi
 import { useAppSelector } from '../../hooks';
 import { getQuests } from '../../store/slices/quests/selectors';
 
-function MainScreen(): JSX.Element {
+function MainScreenComponent(): JSX.Element {
   const quests = useAppSelector(getQuests);
 
   const [activeFilterTypeItem, setActiveFilterTypeItem] = useState<keyof typeof TypeQuest>('all');
 
   const [activeFilterLevelItem, setActiveFilterLevelItem] = useState<keyof typeof LevelQuest>('any');
 
-  function handleFilterTypeChange(type: keyof typeof TypeQuest) {
+  const handleFilterTypeChange = useCallback((type: keyof typeof TypeQuest) => {
     setActiveFilterTypeItem(type);
-  }
+  }, []);
 
-  function handleFilterLevelChange(type: keyof typeof LevelQuest) {
+  const handleFilterLevelChange = useCallback((type: keyof typeof LevelQuest) => {
     setActiveFilterLevelItem(type);
-  }
+  }, []);
 
-  let filteredQuests = quests;
+  let filteredQuests = useMemo(() => quests, [quests]);
 
   if(activeFilterTypeItem !== 'all' && activeFilterLevelItem !== 'any') {
     filteredQuests = quests.filter((quest) => quest.type === activeFilterTypeItem && quest.level === activeFilterLevelItem);
@@ -72,4 +72,5 @@ function MainScreen(): JSX.Element {
   );
 }
 
+const MainScreen = memo(MainScreenComponent);
 export default MainScreen;

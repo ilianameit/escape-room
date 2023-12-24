@@ -7,7 +7,7 @@ import styles from './style.module.css';
 import classNames from 'classnames';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { fetchBookQuestAction } from '../../store/api-actions';
-import { ChangeEvent, useEffect, useState } from 'react';
+import { ChangeEvent, memo, useCallback, useEffect, useState } from 'react';
 import { BookingPreview } from '../../types/booking-preview';
 import { DateSlotBooking } from '../../types/slots-booking';
 import { useNavigate } from 'react-router-dom';
@@ -28,7 +28,7 @@ type BookingFormProps = {
   quests: BookingInfo[];
   selectedQuest?: BookingInfo;
 }
-function BookingForm({quest, quests, selectedQuest}: BookingFormProps):JSX.Element { //reserForm
+function BookingFormComponent({quest, quests, selectedQuest}: BookingFormProps):JSX.Element { //reserForm
   const dispatch = useAppDispatch();
   const navigateTo = useNavigate();
   const [slot, setSlot] = useState<DateSlotBooking>({
@@ -89,14 +89,14 @@ function BookingForm({quest, quests, selectedQuest}: BookingFormProps):JSX.Eleme
     navigateTo(AppRoutes.MyQuests);
   }
 
-  const handleSlotChange = (type: keyof typeof DateBooking, time: string) => {
+  const handleSlotChange = useCallback((type: keyof typeof DateBooking, time: string) => {
     setSlot({
       ...slot,
       today: {time: '', isAvailable: true},
       tomorrow: {time: '', isAvailable: true},
       [type]: {time, isAvailable: true }
     });
-  };
+  }, [slot]);
 
   const handleContactPersonChange = (evt: ChangeEvent<HTMLInputElement>) => {
     setContactPerson(evt.target.value);
@@ -237,4 +237,5 @@ function BookingForm({quest, quests, selectedQuest}: BookingFormProps):JSX.Eleme
   );
 }
 
+const BookingForm = memo(BookingFormComponent);
 export default BookingForm;

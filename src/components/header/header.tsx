@@ -5,8 +5,9 @@ import Logo from '../logo/logo';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { getAuthorizationStatus } from '../../store/slices/user/selectors';
 import { logoutAction } from '../../store/api-actions';
+import { memo } from 'react';
 
-function Header(): JSX.Element {
+function HeaderComponent(): JSX.Element {
   const dispatch = useAppDispatch();
   const authorizationStatus = useAppSelector(getAuthorizationStatus);
   const isLogged = checkAuthorizationStatus(authorizationStatus);
@@ -64,4 +65,5 @@ function Header(): JSX.Element {
   );
 }
 
+const Header = memo(HeaderComponent);
 export default Header;

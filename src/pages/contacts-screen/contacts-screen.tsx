@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import SvgHidden from '../../components/svg-hidden/svg-hidden';
 import Header from '../../components/header/header';
 import Footer from '../../components/footer/footer';
@@ -11,7 +11,7 @@ const location: Location = {
   coords: [59.968403, 30.317359],
 };
 
-function ContactsScreen():JSX.Element {
+function ContactsScreenComponent():JSX.Element {
   return(
     <React.Fragment>
       <Helmet>
@@ -68,4 +68,5 @@ function ContactsScreen():JSX.Element {
   );
 }
 
+const ContactsScreen = memo(ContactsScreenComponent);
 export default ContactsScreen;

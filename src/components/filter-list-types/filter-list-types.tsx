@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { TypeQuest, definitionTypes } from '../../const/const';
 import FilterItemType from '../filter-item-type/filter-item-type';
 
@@ -6,7 +7,7 @@ type FilterListTypesProps = {
   activeType: keyof typeof TypeQuest;
 }
 
-function FilterListTypes({onChangeType, activeType}: FilterListTypesProps): JSX.Element {
+function FilterListTypesComponent({onChangeType, activeType}: FilterListTypesProps): JSX.Element {
   return(
     <ul className="filter__list">
       {
@@ -18,4 +19,5 @@ function FilterListTypes({onChangeType, activeType}: FilterListTypesProps): JSX.
   );
 }
 
+const FilterListTypes = memo(FilterListTypesComponent);
 export default FilterListTypes;

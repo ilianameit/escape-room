@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { memo, useEffect } from 'react';
 import SvgHidden from '../../components/svg-hidden/svg-hidden';
 import Header from '../../components/header/header';
 import Footer from '../../components/footer/footer';
@@ -14,7 +14,7 @@ import LoadingScreen from '../loading.screen/loading-screen';
 
 const MAX_LENGTH_DESCRIPTION = 300;
 
-function QuestScreen(): JSX.Element {
+function QuestScreenComponent(): JSX.Element {
   const {id} = useParams();
   const dispatch = useAppDispatch();
 
@@ -110,4 +110,5 @@ function QuestScreen(): JSX.Element {
   );
 }
 
+const QuestScreen = memo(QuestScreenComponent);
 export default QuestScreen;

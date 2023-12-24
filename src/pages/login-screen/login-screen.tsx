@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useEffect, useState } from 'react';
+import React, { ChangeEvent, memo, useEffect, useState } from 'react';
 import SvgHidden from '../../components/svg-hidden/svg-hidden';
 import Header from '../../components/header/header';
 import Footer from '../../components/footer/footer';
@@ -20,7 +20,7 @@ type LocationState = {
   };
 }
 
-function LoginScreen():JSX.Element {
+function LoginScreenComponent():JSX.Element {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const location = useLocation();
@@ -160,4 +160,5 @@ function LoginScreen():JSX.Element {
   );
 }
 
+const LoginScreen = memo(LoginScreenComponent);
 export default LoginScreen;

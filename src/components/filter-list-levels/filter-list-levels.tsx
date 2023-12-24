@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { LevelQuest, definitionLevels } from '../../const/const';
 import FilterItemLevel from '../filter-item-level/filter-item-level';
 
@@ -6,7 +7,7 @@ type FilterListLevelsProps = {
   activeLevel: keyof typeof LevelQuest;
 }
 
-function FilterListLevels({onChangeLevel, activeLevel}: FilterListLevelsProps): JSX.Element {
+function FilterListLevelsComponent({onChangeLevel, activeLevel}: FilterListLevelsProps): JSX.Element {
   return(
     <ul className="filter__list">
       {
@@ -18,4 +19,5 @@ function FilterListLevels({onChangeLevel, activeLevel}: FilterListLevelsProps): 
   );
 }
 
+const FilterListLevels = memo(FilterListLevelsComponent);
 export default FilterListLevels;

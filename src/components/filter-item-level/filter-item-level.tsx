@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { LevelQuest } from '../../const/const';
 import { ucFirst } from '../../utils/common';
 
@@ -8,7 +9,7 @@ type FilterItemLevelProps = {
   activeLevel: keyof typeof LevelQuest;
 }
 
-function FilterItemLevel({onChangeLevel, level, nameLevel, activeLevel}: FilterItemLevelProps):JSX.Element {
+function FilterItemLevelComponent({onChangeLevel, level, nameLevel, activeLevel}: FilterItemLevelProps):JSX.Element {
   return(
     <li className="filter__item">
       <input type="radio" name="level" id={level} onChange={() => onChangeLevel(level)} checked={activeLevel === level}/>
@@ -18,4 +19,5 @@ function FilterItemLevel({onChangeLevel, level, nameLevel, activeLevel}: FilterI
   );
 }
 
+const FilterItemLevel = memo(FilterItemLevelComponent);
 export default FilterItemLevel;

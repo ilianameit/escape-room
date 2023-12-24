@@ -1,6 +1,7 @@
+import { memo } from 'react';
 import { footerSocials } from './consts';
 
-function Footer(): JSX.Element {
+function FooterComponent(): JSX.Element {
   return(
     <footer className="footer">
       <div className="container container--size-l">
@@ -28,4 +29,5 @@ function Footer(): JSX.Element {
   );
 }
 
+const Footer = memo(FooterComponent);
 export default Footer;

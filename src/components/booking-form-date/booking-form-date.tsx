@@ -1,3 +1,4 @@
+import { memo, useMemo } from 'react';
 import { DateBooking, dateBooking } from '../../const/const';
 import { Slot } from '../../types/slot';
 import { DateSlotBooking } from '../../types/slots-booking';
@@ -9,8 +10,8 @@ type BookingFormDateProps = {
   slotChecked: DateSlotBooking;
 }
 
-function BookingFormDate({typeDate, slotsDate, onSlotChange, slotChecked}: BookingFormDateProps): JSX.Element {
-  const isType = slotChecked.today.time ? 'today' : 'tomorrow';
+function BookingFormDateComponent({typeDate, slotsDate, onSlotChange, slotChecked}: BookingFormDateProps): JSX.Element {
+  const isType = useMemo(()=>slotChecked.today.time ? 'today' : 'tomorrow', [slotChecked.today.time]);
 
   return(
     <fieldset className="booking-form__date-section">
@@ -18,7 +19,7 @@ function BookingFormDate({typeDate, slotsDate, onSlotChange, slotChecked}: Booki
       <div className="booking-form__date-inner-wrapper">
         {
           slotsDate.map(({time, isAvailable}) => (
-            <label key={time} className="custom-radio booking-form__date">
+            <label key={`${typeDate}${time}`} className="custom-radio booking-form__date">
               <input
                 type="radio"
                 id={`${typeDate}${time}`}
@@ -38,4 +39,5 @@ function BookingFormDate({typeDate, slotsDate, onSlotChange, slotChecked}: Booki
   );
 }
 
+const BookingFormDate = memo(BookingFormDateComponent);
 export default BookingFormDate;

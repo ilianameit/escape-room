@@ -1,11 +1,11 @@
 import { Helmet } from 'react-helmet-async';
 import Header from '../../components/header/header';
-import React from 'react';
+import React, { memo } from 'react';
 import SvgHidden from '../../components/svg-hidden/svg-hidden';
 import { useAppDispatch } from '../../hooks';
 import { fetchQuestsAction } from '../../store/api-actions';
 
-function ErrorQuestsScreen(): JSX.Element {
+function ErrorQuestsScreenComponent(): JSX.Element {
   const dispatch = useAppDispatch();
 
   return(
@@ -35,4 +35,5 @@ function ErrorQuestsScreen(): JSX.Element {
   );
 }
 
+const ErrorQuestsScreen = memo(ErrorQuestsScreenComponent);
 export default ErrorQuestsScreen;

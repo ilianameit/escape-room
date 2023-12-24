@@ -1,7 +1,7 @@
 import { Icon, Marker, layerGroup } from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { Location } from '../../types/location';
-import { useEffect, useRef } from 'react';
+import { memo, useEffect, useRef } from 'react';
 import { BookingInfo } from '../../types/booking-info';
 import useMap from '../../hooks/use-map/use-map';
 import classNames from 'classnames';
@@ -28,7 +28,7 @@ type MapProps = {
   onMarkerClick?: (quest: BookingInfo) => void;
 }
 
-function Map({block, location, quests, selectedQuest, onMarkerClick}: MapProps): JSX.Element {
+function MapComponent({block, location, quests, selectedQuest, onMarkerClick}: MapProps): JSX.Element {
 
   const mapRef = useRef(null);
   const map = useMap({ mapRef, location, quests });
@@ -87,4 +87,5 @@ function Map({block, location, quests, selectedQuest, onMarkerClick}: MapProps):
   );
 }
 
+const Map = memo(MapComponent);
 export default Map;
