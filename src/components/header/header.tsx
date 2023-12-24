@@ -1,10 +1,20 @@
 import { Link, NavLink } from 'react-router-dom';
-import { AppRoutes, currAuthorizationStatus } from '../../const/const';
+import { AppRoutes } from '../../const/const';
 import { checkAuthorizationStatus } from '../../utils/check-authorization-status/check-authorization-status';
 import Logo from '../logo/logo';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { getAuthorizationStatus } from '../../store/slices/user/selectors';
+import { logoutAction } from '../../store/api-actions';
 
 function Header(): JSX.Element {
-  const isLogged = checkAuthorizationStatus(currAuthorizationStatus);
+  const dispatch = useAppDispatch();
+  const authorizationStatus = useAppSelector(getAuthorizationStatus);
+  const isLogged = checkAuthorizationStatus(authorizationStatus);
+
+  const handleLogOutClick = () => {
+    dispatch(logoutAction());
+  };
+
   return(
     <header className="header">
       <div className="container container--size-l">
@@ -38,7 +48,13 @@ function Header(): JSX.Element {
         <div className="header__side-nav">
           {
             isLogged ?
-              <a className="btn btn--accent header__side-item" href="#">Выйти</a>
+              <Link
+                className="btn btn--accent header__side-item"
+                to=''
+                onClick={handleLogOutClick}
+              >
+                  Выйти
+              </Link>
               : <Link className="btn header__side-item header__login-btn" to={AppRoutes.Login}>Вход</Link>
           }
           <a className="link header__side-item header__phone-link" href="tel:88003335599">8 (000) 111-11-11</a>

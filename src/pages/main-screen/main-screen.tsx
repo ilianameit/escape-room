@@ -3,12 +3,28 @@ import SvgHidden from '../../components/svg-hidden/svg-hidden';
 import Footer from '../../components/footer/footer';
 import Header from '../../components/header/header';
 import { Helmet } from 'react-helmet-async';
-import { QuestPreview } from '../../types/quest-preview';
 import QuestList from '../../components/quest-list/quest-list';
+import FilterListTypes from '../../components/filter-list-types/filter-list-types';
+import FilterListLevels from '../../components/filter-list-levels/filter-list-levels';
+import { LevelQuest, TypeQuest } from '../../const/const';
+import EmptyFilteredQuests from '../../components/empty-filtered-quests/empty-filtered-quests';
+import { useAppSelector } from '../../hooks';
+import { getQuests } from '../../store/slices/quests/selectors';
 
-type MainProps = {
-  quests: QuestPreview[];
-}
+function MainScreen(): JSX.Element {
+  const quests = useAppSelector(getQuests);
+
+  const [activeFilterTypeItem, setActiveFilterTypeItem] = useState<keyof typeof TypeQuest>('all');
+
+  const [activeFilterLevelItem, setActiveFilterLevelItem] = useState<keyof typeof LevelQuest>('any');
+
+  function handleFilterTypeChange(type: keyof typeof TypeQuest) {
+    setActiveFilterTypeItem(type);
+  }
+
+  function handleFilterLevelChange(type: keyof typeof LevelQuest) {
+    setActiveFilterLevelItem(type);
+  }
 
   let filteredQuests = quests;
 
@@ -20,7 +36,6 @@ type MainProps = {
     filteredQuests = quests.filter((quest) => quest.type === activeFilterTypeItem);
   }
 
-function MainScreen({quests}: MainProps): JSX.Element {
   return(
     <React.Fragment>
       <Helmet>

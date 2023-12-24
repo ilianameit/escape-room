@@ -6,8 +6,8 @@ import { BookingInfo } from '../../types/booking-info';
 import useMap from '../../hooks/use-map/use-map';
 import classNames from 'classnames';
 
-const URL_MARKER_DEFAULT = '../markup/img/svg/pin-default.svg';
-const URL_MARKER_ACTIVE = '../markup/img/svg/pin-active.svg';
+const URL_MARKER_DEFAULT = '/img/svg/pin-default.svg';
+const URL_MARKER_ACTIVE = '/img/svg/pin-active.svg';
 
 const defaultCustomIcon = new Icon({
   iconUrl: URL_MARKER_DEFAULT,
@@ -25,23 +25,31 @@ type MapProps = {
   location: Location;
   quests?: BookingInfo[];
   selectedQuest?: BookingInfo;
+  onMarkerClick?: (quest: BookingInfo) => void;
 }
 
-function Map({block, location, quests, selectedQuest}: MapProps): JSX.Element {
+function Map({block, location, quests, selectedQuest, onMarkerClick}: MapProps): JSX.Element {
 
   const mapRef = useRef(null);
-  const map = useMap({ mapRef, location });
+  const map = useMap({ mapRef, location, quests });
 
   useEffect(() => {
+
+    function handleMarkerClick(quest: BookingInfo) {
+      onMarkerClick?.(quest);
+    }
+
     if (map) {
       const markerLayer = layerGroup().addTo(map);
-      if(quests){
+      if(quests && quests?.length > 1){
 
         quests.forEach((quest) => {
           const marker = new Marker({
             lat: quest.location.coords[0],
             lng: quest.location.coords[1]
           });
+
+          marker.addEventListener('click', () => handleMarkerClick(quest));
 
           marker
             .setIcon(
@@ -67,7 +75,7 @@ function Map({block, location, quests, selectedQuest}: MapProps): JSX.Element {
         map.removeLayer(markerLayer);
       };
     }
-  }, [map, location.coords, quests, selectedQuest]);
+  }, [map, location.coords, quests, selectedQuest, onMarkerClick]);
 
   return(
     <div className={classNames({'booking-map': block === 'booking', 'contacts__map': block === 'contacts'})}>
