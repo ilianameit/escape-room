@@ -14,8 +14,6 @@ export enum AuthorizationStatus {
   Unknown = 'UNKNOWN',
 }
 
-export const currAuthorizationStatus = AuthorizationStatus.Auth;
-
 export enum LevelQuest {
   'any', 'easy', 'medium', 'hard'
 }
