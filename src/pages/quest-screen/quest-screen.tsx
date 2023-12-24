@@ -12,6 +12,7 @@ import { dropQuest } from '../../store/slices/quests/quests';
 import { fetchOneQuestAction } from '../../store/api-actions';
 import LoadingScreen from '../loading.screen/loading-screen';
 
+const MAX_LENGTH_DESCRIPTION = 300;
 
 function QuestScreen(): JSX.Element {
   const {id} = useParams();
@@ -97,7 +98,7 @@ function QuestScreen(): JSX.Element {
                 </li>
               </ul>
               <p className="quest-page__description">
-                {description}
+                {description.slice(0, MAX_LENGTH_DESCRIPTION)}
               </p>
               <Link className="btn btn--accent btn--cta quest-page__btn" to={`${AppRoutes.Quest}${id}${AppRoutes.Booking}`}>Забронировать</Link>
             </div>
